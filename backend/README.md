@@ -22,7 +22,7 @@ The system automatically cleans data, trains models, and serves predictions via 
 
 ```bash
 # Clone repository
-git clone <repo_url>
+git clone https://github.com/gasanashema/Appointment-Predictor.git
 cd backend
 
 # Create virtual env

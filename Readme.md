@@ -97,3 +97,8 @@ You received this response:
 - `backend/ml/pipeline_orchestrator.py`: The manager that calls data -> cleaning -> engineering -> training.
 - `backend/ml/feature_engineering.py`: Where the "SMOTE" magic happens.
 - `backend/api/views.py`: Where your JSON request meets the python logic.
+
+## Project Setup
+```markdown
+For detailed installation and configuration instructions, please refer to the [Backend README](backend/README.md).
+```
