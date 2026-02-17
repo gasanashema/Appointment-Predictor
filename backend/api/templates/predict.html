@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Predictor</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center font-sans">
+
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl transform transition-all hover:scale-[1.01]">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Medical Appointment Predictor</h1>
+            <p class="text-gray-500">Will the patient show up? Enter details below to find out.</p>
+        </div>
+
+        <form id="predictionForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Scheduled Day -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Scheduled Day</label>
+                    <input type="datetime-local" name="ScheduledDay" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                </div>
+                <!-- Appointment Day -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Appointment Day</label>
+                    <input type="datetime-local" name="AppointmentDay" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                </div>
+
+                <!-- Gender -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                    <select name="Gender"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="F">Female</option>
+                        <option value="M">Male</option>
+                    </select>
+                </div>
+
+                <!-- Age -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                    <input type="number" name="Age" min="0" max="120" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <!-- Neighbourhood -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Neighbourhood</label>
+                    <input type="text" name="Neighbourhood" placeholder="e.g. JARDIM DA PENHA" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 uppercase">
+                </div>
+
+                <!-- Boolean Flags -->
+                <!-- Scholarship Removed -->
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" name="Hipertension" id="Hipertension"
+                        class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="Hipertension" class="text-sm text-gray-700">Hipertension</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" name="Diabetes" id="Diabetes"
+                        class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="Diabetes" class="text-sm text-gray-700">Diabetes</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" name="Alcoholism" id="Alcoholism"
+                        class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="Alcoholism" class="text-sm text-gray-700">Alcoholism</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" name="Handcap" id="Handcap"
+                        class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="Handcap" class="text-sm text-gray-700">Handicap</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" name="SMS_received" id="SMS_received"
+                        class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="SMS_received" class="text-sm text-gray-700">SMS Received</label>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full gradient-bg text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                Predict Now
+            </button>
+        </form>
+
+        <!-- Result -->
+        <div id="result"
+            class="hidden mt-8 p-6 bg-gray-50 rounded-xl border border-gray-200 text-center animate-fade-in">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Prediction Result</h3>
+            <p id="predictionText" class="text-4xl font-bold text-indigo-600 mb-2"></p>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
+                <div id="probBar" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            <p id="probText" class="text-sm text-gray-500 mt-2">Confidence: 0%</p>
+        </div>
+        <div id="error" class="hidden mt-8 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200 text-center">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const data = {};
+
+            // Basic fields
+            data.ScheduledDay = form.get('ScheduledDay') ? new Date(form.get('ScheduledDay')).toISOString() : new Date().toISOString();
+            data.AppointmentDay = form.get('AppointmentDay') ? new Date(form.get('AppointmentDay')).toISOString() : new Date().toISOString();
+            data.Gender = form.get('Gender');
+            data.Age = parseInt(form.get('Age'));
+            data.Neighbourhood = form.get('Neighbourhood').toUpperCase();
+
+            // Checkboxes (0 or 1)
+            ['Hipertension', 'Diabetes', 'Alcoholism', 'Handcap', 'SMS_received'].forEach(field => {
+                data[field] = form.get(field) ? 1 : 0;
+            });
+
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const btn = e.target.querySelector('button');
+
+            btn.innerHTML = '<span class="animate-pulse">Analyzing...</span>';
+            btn.disabled = true;
+            resultDiv.classList.add('hidden');
+            errorDiv.classList.add('hidden');
+
+            try {
+                const response = await fetch('/api/predict/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) throw new Error(result.detail || JSON.stringify(result));
+
+                // Show Result
+                resultDiv.classList.remove('hidden');
+
+                const willShow = result.will_show;
+                const prob = result.probability * 100;
+
+                document.getElementById('predictionText').innerText = willShow ? 'Likely to Show Up' : 'Likely No-Show';
+
+                if (willShow) {
+                    document.getElementById('predictionText').className = "text-4xl font-bold text-green-600 mb-2";
+                    document.getElementById('probBar').className = "bg-green-600 h-2.5 rounded-full";
+                    document.getElementById('probBar').style.width = prob + '%';
+                    document.getElementById('probText').innerText = `Probability to Show: ${prob.toFixed(1)}%`;
+                } else {
+                    document.getElementById('predictionText').className = "text-4xl font-bold text-red-600 mb-2";
+                    document.getElementById('probBar').className = "bg-red-600 h-2.5 rounded-full";
+                    // Probability returned is "Probability of showing up".
+                    // If it's low (e.g. 0.2), then No-Show prob is 0.8.
+                    // But in our backend predictor.py:
+                    // return "probability": probability[0] # Probability of showing up
+                    // Wait, if probability[0] is 0.2, then will_show is False (if threshold 0.5).
+
+                    // Let's assume the probability returned is the probability of the PREDICTED class?
+                    // No, I set it to probability[0] (Show).
+
+                    // So if willShow is False, prob is low (e.g. 10%).
+                    // We want to show "Probability to No-Show: 90%".
+                    const noShowProb = 100 - prob;
+
+                    document.getElementById('probBar').style.width = noShowProb + '%';
+                    document.getElementById('probText').innerText = `Probability to No-Show: ${noShowProb.toFixed(1)}%`;
+                }
+
+            } catch (err) {
+                errorDiv.classList.remove('hidden');
+                errorDiv.innerText = `Error: ${err.message}`;
+            } finally {
+                btn.innerHTML = 'Predict Now';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

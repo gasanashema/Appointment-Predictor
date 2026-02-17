@@ -5,7 +5,7 @@ class PredictionInputSerializer(serializers.Serializer):
     AppointmentDay = serializers.DateTimeField()
     Gender = serializers.ChoiceField(choices=['M', 'F'])
     Neighbourhood = serializers.CharField()
-    Scholarship = serializers.IntegerField()
+    # Scholarship removed
     Hipertension = serializers.IntegerField()
     Diabetes = serializers.IntegerField()
     Alcoholism = serializers.IntegerField()
@@ -14,6 +14,6 @@ class PredictionInputSerializer(serializers.Serializer):
     Age = serializers.IntegerField()
 
 class PredictionOutputSerializer(serializers.Serializer):
-    prediction = serializers.CharField()
-    probability = serializers.ListField(child=serializers.FloatField())
-    raw_prediction = serializers.IntegerField()
+    will_show = serializers.BooleanField()
+    probability = serializers.FloatField()
+    probability_percentage = serializers.FloatField()

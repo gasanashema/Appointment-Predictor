@@ -48,8 +48,9 @@ class FeatureEngineer:
         
         # Neighbourhood: Label Encoding
         # Justification: High cardinality (80+). One-Hot would increase dimensionality significantly.
-        # Tree models handle Label Encoding well. Logistic Regression might struggle, but data is rich.
         df['Neighbourhood'] = self.neighbourhood_encoder.fit_transform(df['Neighbourhood'])
+        # Save mode for fallback
+        self.neighbourhood_mode = df['Neighbourhood'].mode()[0]
         
         # 4. Scaling
         # Scale: Age, waiting_time, appointment_day_of_week
@@ -57,6 +58,10 @@ class FeatureEngineer:
         df[scale_cols] = self.scaler.fit_transform(df[scale_cols])
         
         # 5. Handle Imbalance (SMOTE)
+        # Drop Scholarship as per user request
+        if 'Scholarship' in df.columns:
+            df = df.drop('Scholarship', axis=1)
+            
         X = df.drop('No-show', axis=1)
         y = df['No-show']
         
@@ -82,6 +87,8 @@ class FeatureEngineer:
             pickle.dump(self.scaler, f)
         with open(models_dir / 'neighbourhood_encoder.pkl', 'wb') as f:
             pickle.dump(self.neighbourhood_encoder, f)
+        with open(models_dir / 'neighbourhood_mode.pkl', 'wb') as f:
+            pickle.dump(self.neighbourhood_mode, f)
         
         logger.info(f"Feature engineering artifacts saved to {models_dir}")
 
@@ -92,7 +99,7 @@ class FeatureEngineer:
             db_features.insert_one({
                 "feature_names": feature_names,
                 "shape": X.shape,
-                "target_distribution": y.value_counts().to_dict()
+                "target_distribution": {str(k): v for k, v in y.value_counts().to_dict().items()}
             })
             
             # Persist engineered dataset? X and y combined

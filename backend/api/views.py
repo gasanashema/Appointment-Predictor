@@ -56,6 +56,12 @@ class CleanedDataView(APIView):
 
 class PredictView(APIView):
     def post(self, request):
+        if not _predictor.ready:
+             return Response(
+                 {"error": "Model not ready. Backend is potentially retraining or failed to connect to DB."},
+                 status=status.HTTP_503_SERVICE_UNAVAILABLE
+             )
+
         serializer = PredictionInputSerializer(data=request.data)
         if serializer.is_valid():
             prediction = _predictor.predict(serializer.validated_data)

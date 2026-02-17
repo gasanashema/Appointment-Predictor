@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split, cross_val_score
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import logging
@@ -21,21 +22,29 @@ def train_models(X, y):
     
     models_config = {
         'LogisticRegression': {
-            'model': LogisticRegression(max_iter=1000),
+            'model': LogisticRegression(max_iter=1000, class_weight='balanced'),
             'params': {
                 'C': [0.1, 1, 10], 
                 'solver': ['liblinear', 'lbfgs']
             }
         },
         'DecisionTree': {
-            'model': DecisionTreeClassifier(random_state=42),
+            'model': DecisionTreeClassifier(random_state=42, class_weight='balanced'),
             'params': {
-                'max_depth': [5, 10, 20, None],
-                'min_samples_split': [2, 5, 10]
+                'max_depth': [5, 10], # Removed 20 and None to prevent overfitting/pure leaves
+                'min_samples_leaf': [10, 20, 50], # Force impure leaves for probabilities
+                'min_samples_split': [10, 50] 
+            }
+        },
+        'RandomForest': {
+            'model': RandomForestClassifier(random_state=42, class_weight='balanced', n_jobs=-1),
+            'params': {
+                'n_estimators': [50, 100],
+                'max_depth': [5, 10],
+                'min_samples_leaf': [10, 20]
             }
         }
     }
-    
     best_overall_model = None
     best_overall_score = -1
     best_model_name = ""
