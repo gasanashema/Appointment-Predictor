@@ -1,6 +1,7 @@
 import os
 import pymongo
 from django.conf import settings
+import certifi
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,7 +17,8 @@ def get_db_handle():
             raise ValueError("MONGO_URI not set in environment or settings.")
         
         try:
-            _client = pymongo.MongoClient(mongo_uri)
+            # Use certifi for updated CA bundle
+            _client = pymongo.MongoClient(mongo_uri, tlsCAFile=certifi.where())
             # Check connection
             _client.admin.command('ping')
             logger.info("Connected to MongoDB Atlas successfully.")

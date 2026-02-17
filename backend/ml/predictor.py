@@ -11,6 +11,7 @@ class AppointmentPredictor:
         self.model = None
         self.scaler = None
         self.neighbourhood_encoder = None
+        self.ready = False
         self._load_resources()
 
     def _load_resources(self):
@@ -22,10 +23,14 @@ class AppointmentPredictor:
                 self.scaler = pickle.load(f)
             with open(models_dir / 'neighbourhood_encoder.pkl', 'rb') as f:
                 self.neighbourhood_encoder = pickle.load(f)
+            with open(models_dir / 'neighbourhood_mode.pkl', 'rb') as f:
+                self.neighbourhood_mode = pickle.load(f)
                 
             logger.info("Predictor resources loaded.")
+            self.ready = True
         except Exception as e:
             logger.error(f"Failed to load predictor resources: {e}")
+            self.ready = False
             self.model = None
 
     def predict(self, data: dict):
@@ -61,10 +66,11 @@ class AppointmentPredictor:
             try:
                 df['Neighbourhood'] = self.neighbourhood_encoder.transform(df['Neighbourhood'])
             except ValueError:
-                # Fallback to a common one or -1? 
-                # LabelEncoder doesn't handle unknown.
-                # Use a default 0
-                df['Neighbourhood'] = 0
+                # Fallback to mode (most frequent from training)
+                if hasattr(self, 'neighbourhood_mode'):
+                    df['Neighbourhood'] = self.neighbourhood_mode
+                else:
+                    df['Neighbourhood'] = 0 # Safety net
             
             # 3. Scaling
             scale_cols = ['Age', 'waiting_time', 'appointment_day_of_week']
@@ -83,10 +89,10 @@ class AppointmentPredictor:
             # Transformations:
             # drop ScheduledDay, AppointmentDay
             # waiting_time, appointment_day_of_week added.
-            # So: Gender, Age, Neighbourhood, Scholarship, Hipertension, Diabetes, Alcoholism, Handcap, SMS_received, waiting_time, appointment_day_of_week
+            # So: Gender, Age, Neighbourhood, Hipertension, Diabetes, Alcoholism, Handcap, SMS_received, waiting_time, appointment_day_of_week
             # Let's expect this order.
             
-            feature_order = ['Gender', 'Age', 'Neighbourhood', 'Scholarship', 'Hipertension', 'Diabetes', 'Alcoholism', 'Handcap', 'SMS_received', 'waiting_time', 'appointment_day_of_week']
+            feature_order = ['Gender', 'Age', 'Neighbourhood', 'Hipertension', 'Diabetes', 'Alcoholism', 'Handcap', 'SMS_received', 'waiting_time', 'appointment_day_of_week']
             
             # Ensure all cols exist
             for col in feature_order:
@@ -101,10 +107,11 @@ class AppointmentPredictor:
             
             result = "No-show" if prediction == 1 else "Show"
             
+            # Lean Response with percentage
             return {
-                "prediction": result,
-                "probability": probability,
-                "raw_prediction": int(prediction)
+                "will_show": bool(prediction == 0),
+                "probability": probability[0], # Probability of showing up
+                "probability_percentage": round(probability[0] * 100, 2)
             }
             
         except Exception as e:
