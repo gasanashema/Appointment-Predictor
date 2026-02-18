@@ -54,6 +54,9 @@ class CleanedDataView(APIView):
             if "_id" in d: d.pop("_id")
         return Response(data)
 
+from django.shortcuts import render
+from django.views import View
+
 class PredictView(APIView):
     def post(self, request):
         if not _predictor.ready:
@@ -64,11 +67,33 @@ class PredictView(APIView):
 
         serializer = PredictionInputSerializer(data=request.data)
         if serializer.is_valid():
-            prediction = _predictor.predict(serializer.validated_data)
-            if "error" in prediction:
-               return Response(prediction, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
-            output_serializer = PredictionOutputSerializer(prediction)
-            return Response(output_serializer.data)
+            try:
+                prediction = _predictor.predict(serializer.validated_data)
+                if "error" in prediction:
+                   return Response(prediction, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
+                output_serializer = PredictionOutputSerializer(prediction)
+                return Response(output_serializer.data)
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AppointmentsView(View):
+    def get(self, request):
+        collection = get_collection("appointments")
+        appointments = list(collection.find().limit(50)) # Limit for demo
+        
+        # Sanitize data for template (ensure JSON serializable for the modal)
+        sanitized_appointments = []
+        for appt in appointments:
+            appt['_id'] = str(appt['_id'])
+            # Ensure dates are isoformat if they aren't already (seed might have stored them as string or datetime)
+            # If they are datetime objects, convert them.
+            if hasattr(appt.get('AppointmentDay'), 'isoformat'):
+                appt['AppointmentDay'] = appt['AppointmentDay'].isoformat()
+            if hasattr(appt.get('ScheduledDay'), 'isoformat'):
+                appt['ScheduledDay'] = appt['ScheduledDay'].isoformat()
+            sanitized_appointments.append(appt)
+
+        return render(request, 'appointments.html', {'appointments': sanitized_appointments})

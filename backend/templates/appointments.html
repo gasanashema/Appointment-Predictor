@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HealthSphere AI - Appointments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* Shared Dashboard Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #071F21, #0F3D3E, #092F32, #001516);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            max-width: 100% !important;
+        }
+
+        .sidebar {
+            width: 240px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #6BCB77;
+            margin-bottom: 40px;
+        }
+
+        .sidebar a {
+            display: block;
+            margin: 20px 0;
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 1.05rem;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            color: #6BCB77;
+            width: 25px;
+        }
+
+        .sidebar a:hover {
+            color: #6BCB77;
+            transform: translateX(6px);
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 30px;
+        }
+
+        /* Specific Styles for Table (Glassmorphism) */
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #ddd;
+        }
+
+        th {
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            color: #6BCB77;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Badge Styles */
+        .badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-male {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .badge-female {
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6;
+        }
+
+        /* Modal Styles */
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+
+        body.modal-active {
+            overflow: hidden;
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-container {
+            background: #0F3D3E;
+            /* Match dark theme */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .modal-close {
+            cursor: pointer;
+        }
+
+        button.predict-btn {
+            background: linear-gradient(135deg, #6BCB77, #1E7C86);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button.predict-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>HealthSphere</h2>
+            <a href="/dashboard/"><i class="fa-solid fa-chart-line"></i>Dashboard</a>
+            <a href="/appointments/"><i class="fa-solid fa-calendar-check"></i>Appointments</a>
+            <a href="#"><i class="fa-solid fa-brain"></i>Predictions</a>
+            <a href="#"><i class="fa-solid fa-chart-pie"></i>Analytics</a>
+            <a href="/login/"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <h1><i class="fa-solid fa-list-check"></i> Appointment Management</h1>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Date</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Neighbourhood</th>
+                            <th>Conditions</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                        <tr>
+                            <td>{{ appt.patient_name }}</td>
+                            <td>{{ appt.AppointmentDay|slice:":10" }}</td>
+                            <td>{{ appt.Age }}</td>
+                            <td>
+                                {% if appt.Gender == 'M' %}
+                                <span class="badge badge-male">M</span>
+                                {% else %}
+                                <span class="badge badge-female">F</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ appt.Neighbourhood }}</td>
+                            <td>
+                                {% if appt.Hipertension == 1 %}<span class="text-red-400 font-bold"
+                                    title="Hypertension">H </span>{% endif %}
+                                {% if appt.Diabetes == 1 %}<span class="text-orange-400 font-bold" title="Diabetes">D
+                                </span>{% endif %}
+                                {% if appt.Alcoholism == 1 %}<span class="text-yellow-400 font-bold"
+                                    title="Alcoholism">A </span>{% endif %}
+                                {% if appt.Handcap == 1 %}<span class="text-purple-400 font-bold"
+                                    title="Handicap">Hc</span>{% endif %}
+                                {% if appt.Hipertension == 0 and appt.Diabetes == 0 and appt.Alcoholism == 0 and                                 appt.Handcap == 0 %}
+                                <span class="text-green-400 text-xs">None</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <!-- Pass index -->
+                                <button onclick="openModal('{{ forloop.counter0 }}')" class="predict-btn">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Predict
+                                </button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-gray-400">No appointments found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+        class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center z-50">
+        <div class="modal-overlay absolute w-full h-full" onclick="toggleModal()"></div>
+
+        <div class="modal-container w-11/12 md:max-w-md mx-auto rounded-xl shadow-2xl z-50 overflow-y-auto p-6">
+
+            <!--Header-->
+            <div class="flex justify-between items-center pb-3 border-b border-gray-700">
+                <p class="text-2xl font-bold font-orbitron text-green-400">AI Analysis</p>
+                <div class="modal-close cursor-pointer z-50 text-gray-400 hover:text-white" onclick="toggleModal()">
+                    <i class="fa-solid fa-xmark fa-lg"></i>
+                </div>
+            </div>
+
+            <!--Body-->
+            <div id="modalBody" class="my-5">
+                <p class="mb-2 text-gray-300"><strong>Patient:</strong> <span id="mName" class="text-white"></span></p>
+                <p class="mb-2 text-gray-300"><strong>Date:</strong> <span id="mDate" class="text-white"></span></p>
+
+                <div id="predictionResult"
+                    class="hidden text-center mt-6 p-4 rounded-lg bg-gray-800 border border-gray-700">
+                    <i id="pIcon" class="fa-solid fa-circle-notch fa-spin text-3xl mb-2 text-green-400"></i>
+                    <h3 id="pText" class="text-xl font-bold text-white">Analyzing...</h3>
+                    <p id="pProb" class="text-sm text-gray-400 mt-1"></p>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="flex justify-end pt-4 space-x-3">
+                <button onclick="toggleModal()"
+                    class="px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition">Cancel</button>
+                <button id="runPredictBtn"
+                    class="px-6 py-2 rounded-lg text-white bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 shadow-lg transform hover:scale-105 transition">
+                    Run Prediction
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Valid JSON Data Array
+        const appointmentsData = [
+            {% for appt in appointments %}
+        {
+            "patient_name": "{{ appt.patient_name|escapejs }}",
+                "AppointmentDay": "{{ appt.AppointmentDay|escapejs }}",
+                    "ScheduledDay": "{{ appt.ScheduledDay|escapejs }}",
+                        "Gender": "{{ appt.Gender|escapejs }}",
+                            "Age": {{ appt.Age |default:0 }},
+            "Neighbourhood": "{{ appt.Neighbourhood|escapejs }}",
+                "Hipertension": {{ appt.Hipertension |default:0 }},
+            "Diabetes": {{ appt.Diabetes |default:0 }},
+            "Alcoholism": {{ appt.Alcoholism |default:0 }},
+            "Handcap": {{ appt.Handcap |default:0 }},
+            "SMS_received": {{ appt.SMS_received |default:0 }}
+        },
+        {% endfor %}
+        ];
+
+        let currentAppt = null;
+
+        function toggleModal() {
+            const body = document.querySelector('body');
+            const modal = document.querySelector('.modal');
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+            body.classList.toggle('modal-active');
+
+            // Reset state
+            document.getElementById('predictionResult').classList.add('hidden');
+            document.getElementById('runPredictBtn').style.display = 'block';
+        }
+
+        function openModal(index) {
+            currentAppt = appointmentsData[parseInt(index)];
+            if (!currentAppt) return;
+
+            document.getElementById('mName').innerText = currentAppt.patient_name || 'Unknown';
+            document.getElementById('mDate').innerText = currentAppt.AppointmentDay.substring(0, 10) || '';
+            toggleModal();
+        }
+
+        document.getElementById('runPredictBtn').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('predictionResult');
+            const btn = document.getElementById('runPredictBtn');
+
+            btn.style.display = 'none';
+            resultDiv.classList.remove('hidden');
+
+            // UI Loading State
+            document.getElementById('pIcon').className = "fa-solid fa-circle-notch fa-spin text-3xl mb-2 text-green-400";
+            document.getElementById('pText').innerText = "Analyzing...";
+            document.getElementById('pText').className = "text-xl font-bold text-white";
+            document.getElementById('pProb').innerText = "";
+
+            try {
+                const response = await fetch('/api/predict/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(currentAppt)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.detail || (data.error || "Prediction failed"));
+
+                // Show Result
+                const isShow = data.will_show;
+                const prob = data.probability_percentage;
+
+                const icon = isShow ? "fa-check-circle" : "fa-triangle-exclamation";
+                const color = isShow ? "text-green-500" : "text-red-500";
+                const text = isShow ? "Likely to Show" : "High Risk of No-Show";
+
+                document.getElementById('pIcon').className = `fa-solid ${icon} text-4xl mb-2 ${color}`;
+                document.getElementById('pText').innerText = text;
+                document.getElementById('pText').className = `text-xl font-bold ${color}`;
+                document.getElementById('pProb').innerText = `Confidence: ${prob}%`;
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('pText').innerText = "Error";
+                document.getElementById('pText').className = "text-red-500 font-bold";
+                document.getElementById('pProb').innerText = error.message;
+            }
+        });
+
+        document.onkeydown = function (evt) {
+            evt = evt || window.event;
+            if (evt.key === "Escape" || evt.key === "Esc" || evt.keyCode === 27) {
+                if (document.body.classList.contains('modal-active')) {
+                    toggleModal();
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>

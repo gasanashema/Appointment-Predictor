@@ -20,6 +20,8 @@ def dashboard(request):
     return render(request, "dashboard.html")
 
 
+from api.views import AppointmentsView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
 
@@ -31,9 +33,15 @@ urlpatterns = [
 
     # Dashboard Page
     path("dashboard/", dashboard, name="dashboard"),
+    
+    # Appointments Listing
+    path("appointments/", AppointmentsView.as_view(), name="appointments_list"),
 
     # API
     path("api/", include("api.urls")),
+    
+
+
 
     # Swagger Docs
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),

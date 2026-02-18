@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>HealthSphere AI Command Center</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Icons -->
@@ -21,19 +24,30 @@
         }
 
         @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
-        .container { display: flex; height: 100vh; }
+        .container {
+            display: flex;
+            height: 100vh;
+        }
 
         .sidebar {
             width: 240px;
             padding: 30px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar h2 {
@@ -65,7 +79,9 @@
             overflow-y: auto;
         }
 
-        h1 { font-family: 'Orbitron', sans-serif; }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+        }
 
         .cards {
             display: grid;
@@ -77,9 +93,9 @@
         .card {
             padding: 25px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: 0.4s;
         }
 
@@ -104,16 +120,29 @@
             margin-top: 40px;
             padding: 30px;
             border-radius: 20px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        input {
+        input,
+        select {
             width: 100%;
             padding: 12px;
             margin-top: 10px;
             border-radius: 10px;
             border: none;
             outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        option {
+            background: #0F3D3E;
+            /* Dark background for options */
+            color: white;
         }
 
         button {
@@ -126,9 +155,13 @@
             cursor: pointer;
         }
 
-        button i { margin-right: 8px; }
+        button i {
+            margin-right: 8px;
+        }
 
-        canvas { margin-top: 40px; }
+        canvas {
+            margin-top: 40px;
+        }
 
         .pulse {
             width: 12px;
@@ -141,148 +174,238 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(107,203,119, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(107,203,119, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(107,203,119, 0); }
-        }
+            0% {
+                box-shadow: 0 0 0 0 rgba(107, 203, 119, 0.7);
+            }
 
+            70% {
+                box-shadow: 0 0 0 15px rgba(107, 203, 119, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(107, 203, 119, 0);
+            }
+        }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="sidebar">
-        <h2>HealthSphere</h2>
-        <a href="#"><i class="fa-solid fa-chart-line"></i>Dashboard</a>
-        <a href="#"><i class="fa-solid fa-brain"></i>Predictions</a>
-        <a href="#"><i class="fa-solid fa-chart-pie"></i>Analytics</a>
-        <a href="/login/"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-    </div>
-
-    <div class="main">
-
-        <h1>AI Command Center <span class="pulse"></span></h1>
-        <p style="color:#aaa;">Live No-Show Intelligence System</p>
-
-        <div class="cards">
-            <div class="card">
-                <i class="fa-solid fa-calendar-check"></i>
-                <p>Total Appointments</p>
-                <div class="stat" id="totalCount">0</div>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-user-xmark"></i>
-                <p>Predicted No-Shows</p>
-                <div class="stat" id="noShowCount">0</div>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-shield-halved"></i>
-                <p>Model Accuracy</p>
-                <div class="stat">91%</div>
-            </div>
+        <div class="sidebar">
+            <h2>HealthSphere</h2>
+            <a href="/dashboard/"><i class="fa-solid fa-chart-line"></i>Dashboard</a>
+            <a href="/appointments/"><i class="fa-solid fa-calendar-check"></i>Appointments</a>
+            <a href="#"><i class="fa-solid fa-brain"></i>Predictions</a>
+            <a href="#"><i class="fa-solid fa-chart-pie"></i>Analytics</a>
+            <a href="/login/"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
         </div>
 
-        <div class="predict-box">
-            <h2><i class="fa-solid fa-microchip"></i> Run AI Prediction</h2>
+        <div class="main">
 
-            <form id="predictForm">
-                <input type="number" id="age" placeholder="Patient Age" required>
-                <input type="text" id="gender" placeholder="Gender (M/F)" required>
-                <input type="number" id="sms" placeholder="SMS Received (0/1)" required>
+            <h1>AI Command Center <span class="pulse"></span></h1>
+            <p style="color:#aaa;">Live No-Show Intelligence System</p>
 
-                <button type="submit">
-                    <i class="fa-solid fa-robot"></i> Analyze Patient
-                </button>
-            </form>
+            <div class="cards">
+                <div class="card">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <p>Total Appointments</p>
+                    <div class="stat" id="totalCount">0</div>
+                </div>
 
-            <div class="result" id="result"></div>
+                <div class="card">
+                    <i class="fa-solid fa-user-xmark"></i>
+                    <p>Predicted No-Shows</p>
+                    <div class="stat" id="noShowCount">0</div>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <p>Model Accuracy</p>
+                    <div class="stat">91%</div>
+                </div>
+            </div>
+
+            <div class="predict-box">
+                <h2><i class="fa-solid fa-microchip"></i> Run AI Prediction</h2>
+
+                <form id="predictForm">
+                    <input type="number" id="age" placeholder="Patient Age" required>
+                    <select id="gender" required class="input-field">
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                    <select id="sms" required class="input-field">
+                        <option value="" disabled selected>SMS Received?</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+
+                    <button type="submit">
+                        <i class="fa-solid fa-robot"></i> Analyze Patient
+                    </button>
+                </form>
+
+                <div class="result" id="result"></div>
+            </div>
+
+            <!-- Charts -->
+            <canvas id="lineChart"></canvas>
+            <canvas id="barChart"></canvas>
+            <canvas id="pieChart"></canvas>
+            <canvas id="doughnutChart"></canvas>
+
         </div>
-
-        <!-- Charts -->
-        <canvas id="lineChart"></canvas>
-        <canvas id="barChart"></canvas>
-        <canvas id="pieChart"></canvas>
-        <canvas id="doughnutChart"></canvas>
-
     </div>
-</div>
 
-<script>
+    <script>
 
-function animateValue(id, start, end, duration) {
-    let range = end - start;
-    let current = start;
-    let increment = end > start ? 1 : -1;
-    let stepTime = Math.abs(Math.floor(duration / range));
-    let obj = document.getElementById(id);
+        function animateValue(id, start, end, duration) {
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let obj = document.getElementById(id);
 
-    let timer = setInterval(function() {
-        current += increment;
-        obj.innerHTML = current;
-        if (current == end) clearInterval(timer);
-    }, stepTime);
-}
+            let timer = setInterval(function () {
+                current += increment;
+                obj.innerHTML = current;
+                if (current == end) clearInterval(timer);
+            }, stepTime);
+        }
 
-animateValue("totalCount", 0, 2350, 1500);
-animateValue("noShowCount", 0, 312, 1500);
+        animateValue("totalCount", 0, 2350, 1500);
+        animateValue("noShowCount", 0, 312, 1500);
 
-// LINE CHART
-new Chart(document.getElementById("lineChart"), {
-    type: 'line',
-    data: {
-        labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-        datasets: [{
-            label: "No-Show Trend",
-            data: [12,19,8,15,22,10,18],
-            borderColor: "#6BCB77",
-            fill: true,
-            backgroundColor: "rgba(107,203,119,0.2)"
-        }]
-    }
-});
+        // LINE CHART
+        new Chart(document.getElementById("lineChart"), {
+            type: 'line',
+            data: {
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                datasets: [{
+                    label: "No-Show Trend",
+                    data: [12, 19, 8, 15, 22, 10, 18],
+                    borderColor: "#6BCB77",
+                    fill: true,
+                    backgroundColor: "rgba(107,203,119,0.2)"
+                }]
+            }
+        });
 
-// BAR CHART
-new Chart(document.getElementById("barChart"), {
-    type: 'bar',
-    data: {
-        labels: ["Jan","Feb","Mar","Apr","May"],
-        datasets: [{
-            label: "Appointments",
-            data: [120,190,300,250,220],
-            backgroundColor: "#6BCB77"
-        }]
-    }
-});
+        // BAR CHART
+        new Chart(document.getElementById("barChart"), {
+            type: 'bar',
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+                datasets: [{
+                    label: "Appointments",
+                    data: [120, 190, 300, 250, 220],
+                    backgroundColor: "#6BCB77"
+                }]
+            }
+        });
 
-// PIE CHART
-new Chart(document.getElementById("pieChart"), {
-    type: 'pie',
-    data: {
-        labels: ["Show","No-Show"],
-        datasets: [{
-            data: [2038,312],
-            backgroundColor: ["#6BCB77","#FF6B6B"]
-        }]
-    }
-});
+        // PIE CHART
+        new Chart(document.getElementById("pieChart"), {
+            type: 'pie',
+            data: {
+                labels: ["Show", "No-Show"],
+                datasets: [{
+                    data: [2038, 312],
+                    backgroundColor: ["#6BCB77", "#FF6B6B"]
+                }]
+            }
+        });
 
-// DOUGHNUT CHART
-new Chart(document.getElementById("doughnutChart"), {
-    type: 'doughnut',
-    data: {
-        labels: ["SMS Received","No SMS"],
-        datasets: [{
-            data: [1500,850],
-            backgroundColor: ["#1E7C86","#6BCB77"]
-        }]
-    }
-});
+        // DOUGHNUT CHART
+        new Chart(document.getElementById("doughnutChart"), {
+            type: 'doughnut',
+            data: {
+                labels: ["SMS Received", "No SMS"],
+                datasets: [{
+                    data: [1500, 850],
+                    backgroundColor: ["#1E7C86", "#6BCB77"]
+                }]
+            }
+        });
 
-</script>
+        // ==========================================
+        // PREDICTION LOGIC (Quick Predict)
+        // ==========================================
+        document.getElementById('predictForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            const resultDiv = document.getElementById('result');
+
+            // UI Loading State
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analyzing...';
+            btn.disabled = true;
+            resultDiv.innerHTML = '';
+
+            // 1. Gather Data & Add Defaults for missing fields
+            const now = new Date().toISOString();
+
+            const payload = {
+                // User Inputs
+                "Age": parseInt(document.getElementById('age').value),
+                "Gender": document.getElementById('gender').value,
+                "SMS_received": parseInt(document.getElementById('sms').value),
+
+                // Defaults (Required by Backend)
+                "ScheduledDay": now,
+                "AppointmentDay": now, // Assuming same-day for quick check
+                "Neighbourhood": "CENTRO", // Defaulting to a common one
+                "Hipertension": 0,
+                "Diabetes": 0,
+                "Alcoholism": 0,
+                "Handcap": 0
+            };
+
+            try {
+                // 2. Send to API
+                const response = await fetch('/api/predict/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.detail || JSON.stringify(data));
+
+                // 3. Display Result
+                const isShow = data.will_show;
+                const prob = data.probability_percentage;
+                const color = isShow ? '#6BCB77' : '#FF6B6B'; // Green or Red
+                const text = isShow ? 'Likely to Show' : 'High Risk of No-Show';
+                const icon = isShow ? 'fa-check-circle' : 'fa-triangle-exclamation';
+
+                resultDiv.innerHTML = `
+            <div style="margin-top: 20px; text-align: center; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.1); border-left: 5px solid ${color};">
+                <h3 style="color: ${color}; margin: 0;"><i class="fa-solid ${icon}"></i> ${text}</h3>
+                <p style="margin: 5px 0 0 0; color: #ddd;">Confidence: <strong>${prob}%</strong></p>
+            </div>
+        `;
+
+            } catch (error) {
+                console.error(error);
+                resultDiv.innerHTML = `
+            <div style="margin-top: 20px; color: #FF6B6B; text-align: center;">
+                <i class="fa-solid fa-circle-xmark"></i> Error: ${error.message}
+            </div>
+        `;
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+    </script>
 
 </body>
+
 </html>
