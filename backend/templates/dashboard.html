@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HealthSphere AI Command Center</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #071F21, #0F3D3E, #092F32, #001516);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .container { display: flex; height: 100vh; }
+
+        .sidebar {
+            width: 240px;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: #6BCB77;
+        }
+
+        .sidebar a {
+            display: block;
+            margin: 20px 0;
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            color: #6BCB77;
+        }
+
+        .sidebar a:hover {
+            color: #6BCB77;
+            transform: translateX(6px);
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        h1 { font-family: 'Orbitron', sans-serif; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            padding: 25px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.4s;
+        }
+
+        .card i {
+            font-size: 22px;
+            color: #6BCB77;
+            margin-bottom: 10px;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px #6BCB77;
+        }
+
+        .stat {
+            font-size: 28px;
+            font-weight: bold;
+            color: #6BCB77;
+        }
+
+        .predict-box {
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            background: linear-gradient(135deg, #6BCB77, #1E7C86);
+            color: white;
+            cursor: pointer;
+        }
+
+        button i { margin-right: 8px; }
+
+        canvas { margin-top: 40px; }
+
+        .pulse {
+            width: 12px;
+            height: 12px;
+            background: #6BCB77;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(107,203,119, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(107,203,119, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(107,203,119, 0); }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="sidebar">
+        <h2>HealthSphere</h2>
+        <a href="#"><i class="fa-solid fa-chart-line"></i>Dashboard</a>
+        <a href="#"><i class="fa-solid fa-brain"></i>Predictions</a>
+        <a href="#"><i class="fa-solid fa-chart-pie"></i>Analytics</a>
+        <a href="/login/"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+    </div>
+
+    <div class="main">
+
+        <h1>AI Command Center <span class="pulse"></span></h1>
+        <p style="color:#aaa;">Live No-Show Intelligence System</p>
+
+        <div class="cards">
+            <div class="card">
+                <i class="fa-solid fa-calendar-check"></i>
+                <p>Total Appointments</p>
+                <div class="stat" id="totalCount">0</div>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-user-xmark"></i>
+                <p>Predicted No-Shows</p>
+                <div class="stat" id="noShowCount">0</div>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <p>Model Accuracy</p>
+                <div class="stat">91%</div>
+            </div>
+        </div>
+
+        <div class="predict-box">
+            <h2><i class="fa-solid fa-microchip"></i> Run AI Prediction</h2>
+
+            <form id="predictForm">
+                <input type="number" id="age" placeholder="Patient Age" required>
+                <input type="text" id="gender" placeholder="Gender (M/F)" required>
+                <input type="number" id="sms" placeholder="SMS Received (0/1)" required>
+
+                <button type="submit">
+                    <i class="fa-solid fa-robot"></i> Analyze Patient
+                </button>
+            </form>
+
+            <div class="result" id="result"></div>
+        </div>
+
+        <!-- Charts -->
+        <canvas id="lineChart"></canvas>
+        <canvas id="barChart"></canvas>
+        <canvas id="pieChart"></canvas>
+        <canvas id="doughnutChart"></canvas>
+
+    </div>
+</div>
+
+<script>
+
+function animateValue(id, start, end, duration) {
+    let range = end - start;
+    let current = start;
+    let increment = end > start ? 1 : -1;
+    let stepTime = Math.abs(Math.floor(duration / range));
+    let obj = document.getElementById(id);
+
+    let timer = setInterval(function() {
+        current += increment;
+        obj.innerHTML = current;
+        if (current == end) clearInterval(timer);
+    }, stepTime);
+}
+
+animateValue("totalCount", 0, 2350, 1500);
+animateValue("noShowCount", 0, 312, 1500);
+
+// LINE CHART
+new Chart(document.getElementById("lineChart"), {
+    type: 'line',
+    data: {
+        labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+        datasets: [{
+            label: "No-Show Trend",
+            data: [12,19,8,15,22,10,18],
+            borderColor: "#6BCB77",
+            fill: true,
+            backgroundColor: "rgba(107,203,119,0.2)"
+        }]
+    }
+});
+
+// BAR CHART
+new Chart(document.getElementById("barChart"), {
+    type: 'bar',
+    data: {
+        labels: ["Jan","Feb","Mar","Apr","May"],
+        datasets: [{
+            label: "Appointments",
+            data: [120,190,300,250,220],
+            backgroundColor: "#6BCB77"
+        }]
+    }
+});
+
+// PIE CHART
+new Chart(document.getElementById("pieChart"), {
+    type: 'pie',
+    data: {
+        labels: ["Show","No-Show"],
+        datasets: [{
+            data: [2038,312],
+            backgroundColor: ["#6BCB77","#FF6B6B"]
+        }]
+    }
+});
+
+// DOUGHNUT CHART
+new Chart(document.getElementById("doughnutChart"), {
+    type: 'doughnut',
+    data: {
+        labels: ["SMS Received","No SMS"],
+        datasets: [{
+            data: [1500,850],
+            backgroundColor: ["#1E7C86","#6BCB77"]
+        }]
+    }
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HealthSphere AI | Smart Healthcare Intelligence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #071F21, #0F3D3E, #092F32, #001516);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 80px;
+            align-items: center;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+        }
+
+        .nav-links a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #aaa;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a i {
+            margin-right: 8px;
+            color: #6BCB77;
+        }
+
+        .nav-links a:hover {
+            color: #6BCB77;
+        }
+
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 140px 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero span {
+            color: #6BCB77;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+            color: #bbb;
+            font-size: 18px;
+        }
+
+        .btn-main {
+            margin-top: 30px;
+            padding: 15px 35px;
+            border-radius: 40px;
+            border: none;
+            background: linear-gradient(135deg, #6BCB77, #1E7C86);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-main i {
+            margin-right: 8px;
+        }
+
+        .btn-main:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px #6BCB77;
+        }
+
+        /* FEATURES */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            padding: 80px;
+        }
+
+        .feature {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            transition: 0.4s;
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #6BCB77;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(107,203,119,0.5);
+        }
+
+        .feature h3 {
+            color: #6BCB77;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .cta h2 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        /* Floating circles */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(107,203,119,0.1);
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .circle1 { width: 300px; height: 300px; top: -100px; left: -100px; }
+        .circle2 { width: 200px; height: 200px; bottom: -50px; right: -50px; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(40px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="navbar">
+    <div class="nav-links">
+        <a href="/login/"><i class="fa-solid fa-right-to-bracket"></i>Login</a>
+        <a href="/dashboard/"><i class="fa-solid fa-chart-line"></i>Dashboard</a>
+    </div>
+</div>
+
+<div class="hero">
+    <h1>Smart <span id="typing"></span></h1>
+    <p>
+        AI-powered medical appointment prediction system designed to reduce no-shows,
+        optimize hospital efficiency, and transform healthcare operations using Big Data.
+    </p>
+
+    <a href="/login/">
+        <button class="btn-main">
+            <i class="fa-solid fa-rocket"></i>Get Started
+        </button>
+    </a>
+</div>
+
+<div class="features">
+
+    <div class="feature">
+        <i class="fa-solid fa-brain"></i>
+        <h3>AI Prediction Engine</h3>
+        <p>Machine learning model trained on healthcare datasets to predict patient attendance.</p>
+    </div>
+
+    <div class="feature">
+        <i class="fa-solid fa-database"></i>
+        <h3>Big Data Analytics</h3>
+        <p>Real-time patient behavior tracking with MongoDB integration.</p>
+    </div>
+
+    <div class="feature">
+        <i class="fa-solid fa-hospital"></i>
+        <h3>Hospital Optimization</h3>
+        <p>Reduce appointment waste and increase medical resource efficiency.</p>
+    </div>
+
+</div>
+
+<div class="cta">
+    <h2><i class="fa-solid fa-stethoscope"></i> Transform Your Healthcare System Today</h2>
+    <a href="/login/">
+        <button class="btn-main">
+            <i class="fa-solid fa-play"></i>Launch AI Platform
+        </button>
+    </a>
+</div>
+
+<div class="footer">
+    © 2026 HealthSphere AI • AUCA Innovation Center • Big Data Lab
+</div>
+
+<script>
+const words = ["Healthcare Intelligence", "AI Medical Prediction", "Hospital Optimization"];
+let i = 0;
+let j = 0;
+let currentWord = "";
+let isDeleting = false;
+
+function type() {
+    currentWord = words[i];
+    if (isDeleting) {
+        document.getElementById("typing").textContent = currentWord.substring(0, j--);
+    } else {
+        document.getElementById("typing").textContent = currentWord.substring(0, j++);
+    }
+
+    if (!isDeleting && j === currentWord.length + 1) {
+        isDeleting = true;
+        setTimeout(type, 1000);
+        return;
+    }
+
+    if (isDeleting && j === 0) {
+        isDeleting = false;
+        i = (i + 1) % words.length;
+    }
+
+    setTimeout(type, isDeleting ? 50 : 100);
+}
+
+type();
+</script>
+
+</body>
+</html>
