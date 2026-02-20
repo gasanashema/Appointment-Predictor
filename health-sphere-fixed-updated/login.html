@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html { scroll-behavior: smooth; }
+      .hs-fade { opacity: 0; transform: translateY(4px); }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+      .hs-spin { animation: hs-spin 1s linear infinite; }
+      @keyframes hs-spin { to { transform: rotate(360deg); } }
+
+      /* Seamless image blend — fades all edges into the green background */
+      .hero-img-blend {
+        width: 115%;
+        max-height: 500px;
+        object-fit: contain;
+        display: block;
+        mix-blend-mode: screen;
+        filter: brightness(1.12) saturate(1.2);
+        -webkit-mask-image: radial-gradient(
+          ellipse 80% 75% at 38% 72%,
+          black 35%,
+          rgba(0,0,0,0.6) 55%,
+          transparent 80%
+        );
+        mask-image: radial-gradient(
+          ellipse 80% 75% at 38% 72%,
+          black 35%,
+          rgba(0,0,0,0.6) 55%,
+          transparent 80%
+        );
+        position: relative;
+        left: -8%;
+      }
+    </style>
+    <script src="./app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <div class="min-h-screen flex flex-col lg:flex-row">
+
+      <!-- Left Side - Branding -->
+<div class="w-full lg:w-1/2 bg-gradient-to-br from-teal-700 to-emerald-600 text-white flex items-start justify-start pt-12 p-8 lg:p-16 overflow-hidden relative">
+        <!-- Text content -->
+        <div class="max-w-md w-full text-center lg:text-left relative z-10">
+          <div data-hs-anim class="flex items-center justify-center lg:justify-start gap-3 mb-8">
+            <img src="./assets/logo.png" alt="Health Sphere logo" class="h-16 w-16 object-contain" />
+            <div class="leading-tight">
+              <div class="text-2xl font-semibold">Health Sphere</div>
+              <div class="text-sm text-white/80">AUCA Innovation Center</div>
+            </div>
+          </div>
+          <h1 data-hs-anim class="text-3xl md:text-4xl font-bold mb-8">Smart Healthcare Appointment Predictor</h1>
+        </div>
+
+        <!-- Image: absolute, bottom-left, blended seamlessly -->
+        <div class="absolute bottom-0 left-0 w-full" style="pointer-events: none;">
+          <img
+            src="./assets/hero-illustration.jpeg"
+            alt="Healthcare Analytics Illustration"
+            class="hero-img-blend"
+          />
+        </div>
+
+      </div>
+
+      <!-- Right Side - Login Form -->
+      <div class="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-16 bg-gray-100">
+        <div class="w-full max-w-md">
+          <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+            <h2 class="text-2xl font-semibold mb-6">Sign In</h2>
+
+            <form id="hsLoginForm" class="space-y-5" onsubmit="return false;">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Email</label>
+                <input
+                  id="hsLoginEmail"
+                  class="w-full h-11 rounded-lg border border-slate-200 bg-white px-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+                  type="email"
+                  placeholder="your.email@hospital.com"
+                  required
+                  aria-label="Email"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
+                <input
+                  id="hsLoginPassword"
+                  class="w-full h-11 rounded-lg border border-slate-200 bg-white px-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  aria-label="Password"
+                />
+              </div>
+
+              <div class="flex items-center justify-between">
+                <label class="flex items-center gap-2 text-sm text-slate-600">
+                  <input type="checkbox" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-400/60" />
+                  <span>Remember Me</span>
+                </label>
+              </div>
+
+              <button
+                id="hsLoginBtn"
+                class="relative w-full h-11 rounded-lg text-white font-semibold shadow bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 active:scale-[0.99] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                type="submit"
+              >
+                <span data-hs-btn-label class="transition-opacity">Sign In</span>
+                <span data-hs-btn-spinner class="hidden absolute inset-0 flex items-center justify-center">
+                  <span class="h-5 w-5 rounded-full border-2 border-white/70 border-t-white hs-spin"></span>
+                </span>
+              </button>
+
+              <p class="text-sm text-slate-600 text-center">
+                Don't have an account?
+                <a href="./register.html" class="text-emerald-600 font-semibold hover:underline">Create Account</a>
+              </p>
+
+              <!-- Role Selector -->
+              <div class="pt-4 border-t border-slate-200">
+                <div class="text-sm font-medium text-slate-700 mb-3">Login as:</div>
+                <div class="flex gap-3">
+                  <button
+                    id="hsRoleUser"
+                    type="button"
+                    class="flex-1 h-10 rounded-lg border-2 border-emerald-500 bg-emerald-500 text-white font-semibold transition"
+                  >
+                    User
+                  </button>
+                  <button
+                    id="hsRoleAdmin"
+                    type="button"
+                    class="flex-1 h-10 rounded-lg border-2 border-slate-300 bg-white text-slate-700 font-semibold hover:bg-slate-50 transition"
+                  >
+                    Admin
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

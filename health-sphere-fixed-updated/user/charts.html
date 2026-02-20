@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Charts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-spin {
+        animation: hs-spin 1s linear infinite;
+      }
+      @keyframes hs-spin {
+        to { transform: rotate(360deg); }
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+    </style>
+    <script src="../app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="charts" data-title="Charts" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8 space-y-6">
+            <!-- Empty state -->
+            <section id="hsEmptyState" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8">
+              <div class="flex items-start gap-4">
+                <div class="h-12 w-12 rounded-2xl bg-emerald-100 flex items-center justify-center shrink-0">
+                  <svg class="h-6 w-6 text-emerald-700" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M7 16V9M12 16V6M17 16v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-lg font-semibold">No chart data yet</div>
+                  <div class="mt-1 text-sm text-slate-600">Run a prediction to generate sample analytics.</div>
+                  <div class="mt-4">
+                    <a href="./index.html" class="inline-flex items-center justify-center h-10 px-6 rounded-lg text-white font-semibold shadow bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 active:scale-[0.99] transition">
+                      Run Prediction
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Charts view -->
+            <div id="hsChartsView" class="hidden space-y-6">
+              <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+                  <h3 class="text-sm font-semibold text-slate-800 mb-4">Attendance vs No-Show</h3>
+                  <div class="flex items-center gap-8">
+                    <div id="hsPie" class="relative h-44 w-44 shrink-0 rounded-full" style="background: conic-gradient(#22c55e 0 75%, #ef4444 75% 100%);">
+                      <div class="absolute inset-6 rounded-full bg-white"></div>
+                      <div id="hsPieAttend" class="absolute left-7 bottom-10 text-white font-semibold text-sm">75%</div>
+                      <div id="hsPieNoShow" class="absolute right-9 top-12 text-white font-semibold text-sm">25%</div>
+                    </div>
+                    <div class="space-y-3">
+                      <div class="flex items-center gap-3">
+                        <span class="inline-block h-3 w-3 rounded-sm bg-green-500"></span>
+                        <span class="text-sm font-medium text-slate-700">Attended</span>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <span class="inline-block h-3 w-3 rounded-sm bg-red-500"></span>
+                        <span class="text-sm font-medium text-slate-700">No-Show</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+                  <h3 class="text-sm font-semibold text-slate-800 mb-4">Appointments by Day</h3>
+                  <div class="h-44">
+                    <div class="h-full w-full rounded-lg bg-slate-50 border border-slate-100 p-4">
+                      <div class="h-full flex items-end justify-between gap-4">
+                        <div class="flex flex-col items-center gap-2 w-full">
+                          <div data-hs-bar="Mon" class="w-10 bg-emerald-600/70 rounded-t-md" style="height: 42%;"></div>
+                          <div class="text-xs text-slate-600">Mon</div>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 w-full">
+                          <div data-hs-bar="Tue" class="w-10 bg-emerald-600/70 rounded-t-md" style="height: 60%;"></div>
+                          <div class="text-xs text-slate-600">Tue</div>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 w-full">
+                          <div data-hs-bar="Wed" class="w-10 bg-emerald-600/70 rounded-t-md" style="height: 78%;"></div>
+                          <div class="text-xs text-slate-600">Wed</div>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 w-full">
+                          <div data-hs-bar="Thu" class="w-10 bg-emerald-600/70 rounded-t-md" style="height: 62%;"></div>
+                          <div class="text-xs text-slate-600">Thu</div>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 w-full">
+                          <div data-hs-bar="Fri" class="w-10 bg-emerald-600/70 rounded-t-md" style="height: 50%;"></div>
+                          <div class="text-xs text-slate-600">Fri</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+                  <h3 class="text-sm font-semibold text-slate-800 mb-4">Monthly Trend</h3>
+                  <div class="h-44 rounded-lg bg-slate-50 border border-slate-100 p-4">
+                    <div class="h-full flex items-end gap-3">
+                      <div class="flex-1 flex flex-col items-center gap-2">
+                        <div data-hs-trend class="w-full bg-emerald-600/70 rounded-t-md" style="height: 30%;"></div>
+                        <div class="text-[11px] text-slate-600">Jan</div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center gap-2">
+                        <div data-hs-trend class="w-full bg-emerald-600/70 rounded-t-md" style="height: 44%;"></div>
+                        <div class="text-[11px] text-slate-600">Feb</div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center gap-2">
+                        <div data-hs-trend class="w-full bg-emerald-600/70 rounded-t-md" style="height: 52%;"></div>
+                        <div class="text-[11px] text-slate-600">Mar</div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center gap-2">
+                        <div data-hs-trend class="w-full bg-emerald-600/70 rounded-t-md" style="height: 60%;"></div>
+                        <div class="text-[11px] text-slate-600">Apr</div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center gap-2">
+                        <div data-hs-trend class="w-full bg-emerald-600/70 rounded-t-md" style="height: 55%;"></div>
+                        <div class="text-[11px] text-slate-600">May</div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center gap-2">
+                        <div data-hs-trend class="w-full bg-emerald-600/70 rounded-t-md" style="height: 64%;"></div>
+                        <div class="text-[11px] text-slate-600">Jun</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <footer class="text-center text-xs text-slate-500 pt-2">
+              © 2026 Team DIGITAL Sync. All rights reserved.
+            </footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+

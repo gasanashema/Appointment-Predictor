@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Admin Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-spin {
+        animation: hs-spin 1s linear infinite;
+      }
+      @keyframes hs-spin {
+        to { transform: rotate(360deg); }
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+    </style>
+    <script src="../app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="admin-analytics" data-title="Analytics Overview" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8 space-y-6">
+          <!-- Attendance vs No-Show Chart -->
+          <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+              <h3 class="text-sm font-semibold text-slate-800 mb-4">Attendance vs No-Show</h3>
+              <div class="h-64 flex items-end justify-center gap-4">
+                <div class="flex flex-col items-center gap-2">
+                  <div id="hsBarAttend" class="w-20 bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                  <div class="text-xs font-semibold text-slate-700">Attended</div>
+                  <div id="hsBarAttendLabel" class="text-xs text-slate-600">0%</div>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                  <div id="hsBarNoShow" class="w-20 bg-red-500/70 rounded-t-md" style="height: 0%;"></div>
+                  <div class="text-xs font-semibold text-slate-700">No-Show</div>
+                  <div id="hsBarNoShowLabel" class="text-xs text-slate-600">0%</div>
+                </div>
+              </div>
+            </div>
+
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+              <h3 class="text-sm font-semibold text-slate-800 mb-4">Predictions per Day</h3>
+              <div class="h-64 rounded-lg bg-slate-50 border border-slate-100 p-4">
+                <div class="h-full flex items-end justify-between gap-2">
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-day-bar="Mon" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">Mon</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-day-bar="Tue" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">Tue</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-day-bar="Wed" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">Wed</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-day-bar="Thu" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">Thu</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-day-bar="Fri" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">Fri</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Confidence Distribution -->
+          <section>
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+              <h3 class="text-sm font-semibold text-slate-800 mb-4">Confidence Distribution</h3>
+              <div class="h-64 rounded-lg bg-slate-50 border border-slate-100 p-4">
+                <div class="h-full flex items-end justify-between gap-2">
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-conf-bar="50-60" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">50-60%</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-conf-bar="60-70" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">60-70%</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-conf-bar="70-80" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">70-80%</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-conf-bar="80-90" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">80-90%</div>
+                  </div>
+                  <div class="flex flex-col items-center gap-2 flex-1">
+                    <div data-hs-conf-bar="90-100" class="w-full bg-emerald-600/70 rounded-t-md" style="height: 0%;"></div>
+                    <div class="text-[11px] text-slate-600">90-100%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <footer class="text-center text-xs text-slate-500 pt-2">
+            © 2026 Team DIGITAL Sync. All rights reserved.
+          </footer>
+        </div>
+        <!-- /Page Content -->
+      </main>
+    </div>
+  </body>
+</html>

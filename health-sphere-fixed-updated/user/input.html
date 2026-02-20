@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Input Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+      .hs-spin {
+        animation: hs-spin 1s linear infinite;
+      }
+      @keyframes hs-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <script src="../app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="input" data-title="Input Form" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8">
+            <section data-hs-anim class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+              <div class="p-6 md:p-8">
+                <h2 class="text-lg font-semibold mb-5">Patient Details</h2>
+                <form class="space-y-6" onsubmit="return false;" aria-label="Patient input form">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label class="block text-sm font-medium text-slate-700 mb-2">Age</label>
+                      <input
+                        id="hsAge"
+                        class="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+                        type="number"
+                        inputmode="numeric"
+                        min="0"
+                        max="120"
+                        aria-label="Age"
+                      />
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-slate-700 mb-2">Gender</label>
+                      <select id="hsGender" class="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60" aria-label="Gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-slate-700 mb-2">SMS Received?</label>
+                      <select id="hsSms" class="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60" aria-label="SMS received">
+                        <option>Yes</option>
+                        <option>No</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-slate-700 mb-2">Appointment Day</label>
+                      <input id="hsApptDay" class="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60" type="date" aria-label="Appointment day" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <button
+                      id="hsPredictBtn"
+                      class="relative h-10 px-10 rounded-lg text-white font-semibold shadow bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 active:scale-[0.99] transition"
+                      type="button"
+                    >
+                      <span data-hs-btn-label class="transition-opacity">Predict</span>
+                      <span data-hs-btn-spinner class="hidden absolute inset-0 flex items-center justify-center">
+                        <span class="inline-flex items-center gap-2">
+                          <span class="h-4 w-4 rounded-full border-2 border-white/70 border-t-white hs-spin"></span>
+                          <span class="text-sm font-semibold">Loading</span>
+                        </span>
+                      </span>
+                    </button>
+                    <div class="mt-3 text-sm text-slate-500">
+                      Fill in the patient details and click <span class="font-semibold">Predict</span> to generate an attendance prediction.
+                    </div>
+                    <div id="hsInputStatus" class="mt-2 text-sm text-slate-500" aria-live="polite"></div>
+                  </div>
+                </form>
+              </div>
+            </section>
+
+            <footer class="text-center text-xs text-slate-500 pt-8">
+              © 2026 Team DIGITAL Sync. All rights reserved.
+            </footer>
+        </div>
+        <!-- /Page Content -->
+      </main>
+    </div>
+  </body>
+</html>

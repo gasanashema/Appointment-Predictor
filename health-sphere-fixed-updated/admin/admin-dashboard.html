@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-spin {
+        animation: hs-spin 1s linear infinite;
+      }
+      @keyframes hs-spin {
+        to { transform: rotate(360deg); }
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+      .hs-modal {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 200ms ease;
+      }
+      .hs-modal.hs-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .hs-toast {
+        transform: translateX(400px);
+        transition: transform 300ms ease;
+      }
+      .hs-toast.hs-show {
+        transform: translateX(0);
+      }
+    </style>
+    <script src="../app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="admin-dashboard" data-title="Admin Dashboard" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8 space-y-6">
+          <!-- Metrics Row -->
+          <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 text-center">
+              <div class="text-sm font-semibold text-slate-700">Total Patients</div>
+              <div id="hsMetricPatients" class="mt-2 text-3xl font-extrabold text-emerald-700">0</div>
+            </div>
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 text-center">
+              <div class="text-sm font-semibold text-slate-700">Total Predictions</div>
+              <div id="hsMetricPredictions" class="mt-2 text-3xl font-extrabold text-emerald-700">0</div>
+            </div>
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 text-center">
+              <div class="text-sm font-semibold text-slate-700">Attendance Rate</div>
+              <div id="hsMetricAttendance" class="mt-2 text-3xl font-extrabold text-emerald-700">0%</div>
+            </div>
+            <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 text-center">
+              <div class="text-sm font-semibold text-slate-700">No-Show Rate</div>
+              <div id="hsMetricNoShow" class="mt-2 text-3xl font-extrabold text-emerald-700">0%</div>
+            </div>
+          </section>
+
+          <!-- Recent Predictions Table -->
+          <section data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+            <div class="p-6 md:p-8">
+              <div class="flex items-center justify-between mb-5">
+                <h2 class="text-lg font-semibold">Recent Predictions</h2>
+                <button
+                  id="hsExportBtn"
+                  class="h-9 px-4 rounded-lg text-sm font-semibold text-white shadow bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 active:scale-[0.99] transition"
+                  type="button"
+                >
+                  Export CSV
+                </button>
+              </div>
+
+              <div id="hsPredictionsEmpty" class="hidden text-center py-12 text-slate-500">
+                <div class="text-lg font-semibold mb-2">No prediction data available yet.</div>
+                <div class="text-sm">Predictions will appear here once users start using the system.</div>
+              </div>
+
+              <div id="hsPredictionsTable" class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Patient Name</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Age</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">SMS Received</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Prediction</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Confidence</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="hsPredictionsTbody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <footer class="text-center text-xs text-slate-500 pt-2">
+            © 2026 Team DIGITAL Sync. All rights reserved.
+          </footer>
+        </div>
+        <!-- /Page Content -->
+      </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="hsToastContainer" class="fixed top-20 right-8 z-50 space-y-2"></div>
+  </body>
+</html>
