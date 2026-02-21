@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Admin Predictions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-spin {
+        animation: hs-spin 1s linear infinite;
+      }
+      @keyframes hs-spin {
+        to { transform: rotate(360deg); }
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+      .hs-toast {
+        transform: translateX(400px);
+        transition: transform 300ms ease;
+      }
+      .hs-toast.hs-show {
+        transform: translateX(0);
+      }
+    </style>
+    <script src="../app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="admin-predictions" data-title="All Predictions" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8 space-y-6">
+          <!-- Filters -->
+          <section data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+            <div class="p-6 md:p-8">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-2">Search</label>
+                  <input
+                    id="hsSearchInput"
+                    class="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+                    type="text"
+                    placeholder="Search by patient name..."
+                    aria-label="Search predictions"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-2">Filter</label>
+                  <select
+                    id="hsFilterSelect"
+                    class="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+                    aria-label="Filter predictions"
+                  >
+                    <option value="all">All</option>
+                    <option value="attend">Likely to Attend</option>
+                    <option value="no-show">Likely No-Show</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Predictions Table -->
+          <section data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+            <div class="p-6 md:p-8">
+              <h2 class="text-lg font-semibold mb-5">All Predictions</h2>
+
+              <div id="hsPredictionsEmpty" class="hidden text-center py-12 text-slate-500">
+                <div class="text-lg font-semibold mb-2">No predictions found.</div>
+                <div class="text-sm">Try adjusting your search or filter criteria.</div>
+              </div>
+
+              <div id="hsPredictionsTable" class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Patient Name</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Age</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Gender</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">SMS</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Prediction</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Confidence</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="hsPredictionsTbody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <footer class="text-center text-xs text-slate-500 pt-2">
+            © 2026 Team DIGITAL Sync. All rights reserved.
+          </footer>
+        </div>
+        <!-- /Page Content -->
+      </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="hsToastContainer" class="fixed top-20 right-8 z-50 space-y-2"></div>
+  </body>
+</html>

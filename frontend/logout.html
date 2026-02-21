@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Logout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+    </style>
+    <script src="./app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="logout" data-title="Logout" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8">
+            <section data-hs-anim class="max-w-xl mx-auto bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+              <div class="text-lg font-semibold">You have been successfully logged out.</div>
+              <div class="mt-2 text-sm text-slate-600">Return to the login screen to continue.</div>
+              <div class="mt-6">
+                <a href="./index.html" class="inline-flex items-center justify-center h-10 px-8 rounded-lg text-white font-semibold shadow bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 active:scale-[0.99] transition">
+                  Return to Login
+                </a>
+              </div>
+            </section>
+
+            <footer class="text-center text-xs text-slate-500 pt-8">
+              © 2026 Team DIGITAL Sync. All rights reserved.
+            </footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+

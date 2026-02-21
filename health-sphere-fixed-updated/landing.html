@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Predict Patient Attendance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html { scroll-behavior: smooth; }
+      .hs-fade { opacity: 0; transform: translateY(4px); }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+
+      /* Seamless blend for predicter image */
+      .predicter-img {
+        width: 100%;
+        object-fit: contain;
+        display: block;
+        mix-blend-mode: multiply;
+        filter: brightness(1.05) saturate(1.1);
+        -webkit-mask-image: radial-gradient(
+          ellipse 88% 85% at 50% 55%,
+          black 40%,
+          rgba(0,0,0,0.5) 65%,
+          transparent 85%
+        );
+        mask-image: radial-gradient(
+          ellipse 88% 85% at 50% 55%,
+          black 40%,
+          rgba(0,0,0,0.5) 65%,
+          transparent 85%
+        );
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- Top Navigation -->
+    <nav class="bg-gradient-to-r from-teal-700 to-emerald-600 text-white shadow">
+      <div class="h-16 px-8 flex items-center justify-between gap-6">
+        <div class="flex items-center gap-3 min-w-0">
+          <img src="./assets/logo.png" alt="Health Sphere logo" class="h-10 w-10 object-contain" />
+          <div class="leading-tight min-w-0">
+            <div class="text-base font-semibold truncate">Health Sphere</div>
+            <div class="text-xs text-white/80 truncate">AUCA Innovation Center</div>
+          </div>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-6">
+          <a href="./login.html" class="px-4 py-2 rounded-lg hover:bg-emerald-500/30 transition duration-300 text-white font-medium">Login</a>
+          <a href="./register.html" class="px-4 py-2 rounded-lg bg-emerald-500 text-white font-medium hover:brightness-105 transition">Get Started</a>
+        </div>
+
+        <div class="lg:hidden flex items-center gap-3">
+          <a href="./login.html" class="px-3 py-2 rounded-lg hover:bg-emerald-500/30 transition duration-300 text-white text-sm font-medium">Login</a>
+          <a href="./register.html" class="px-3 py-2 rounded-lg bg-emerald-500 text-white text-sm font-medium hover:brightness-105 transition">Get Started</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-teal-50 to-emerald-50">
+      <div class="max-w-6xl mx-auto px-8 py-16 text-center">
+        <h1 data-hs-anim class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-800 mb-6">
+          Predicting & Reducing<br />
+          Patient Appointment No-Shows
+        </h1>
+        <p data-hs-anim class="text-xl md:text-2xl text-slate-600 mb-8">Powered by AI & Data Science</p>
+        <div data-hs-anim class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a
+            href="./register.html"
+            class="h-12 px-8 rounded-lg text-white font-semibold shadow-lg bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 active:scale-[0.99] transition"
+          >
+            Get Started Now
+          </a>
+        </div>
+
+        <!-- ✅ REPLACED: SVG placeholder → predicter.png -->
+        <div data-hs-anim class="mt-16 max-w-4xl mx-auto">
+          <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
+            <img
+              src="./assets/predicter.png"
+              alt="Healthcare Analytics Dashboard"
+              class="predicter-img rounded-lg"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="py-16 bg-gray-100">
+      <div class="max-w-6xl mx-auto px-8">
+        <h2 data-hs-anim class="text-3xl font-bold text-center text-slate-800 mb-12">Key Features</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+            <div class="h-14 w-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-4">
+              <svg class="h-7 w-7 text-emerald-700" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M8 8h8M8 12h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Predict No-Shows</h3>
+            <p class="text-sm text-slate-600">Learn how we're proactively predicting patient no-shows using advanced machine learning algorithms.</p>
+          </div>
+
+          <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+            <div class="h-14 w-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-4">
+              <svg class="h-7 w-7 text-emerald-700" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Reduce Revenue Loss</h3>
+            <p class="text-sm text-slate-600">Minimize financial impact by identifying high-risk appointments and optimizing scheduling strategies.</p>
+          </div>
+
+          <div data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 p-6 md:p-8">
+            <div class="h-14 w-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-4">
+              <svg class="h-7 w-7 text-emerald-700" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M22 4 12 14.01l-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Improve Patient Care</h3>
+            <p class="text-sm text-slate-600">Enhance patient experience by ensuring timely appointments and reducing wait times.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-8">
+      <div class="max-w-6xl mx-auto px-8 text-center text-xs text-slate-500">
+        © 2026 Team DIGITAL Sync. All rights reserved.
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const anims = document.querySelectorAll("[data-hs-anim]");
+        anims.forEach((el, idx) => {
+          el.classList.add("hs-fade");
+          window.setTimeout(() => el.classList.add("hs-in"), 100 + idx * 100);
+        });
+      });
+    </script>
+  </body>
+</html>
