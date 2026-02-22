@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Sphere — Admin Users</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes hs-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body { animation: hs-page-in 300ms ease forwards; }
+      html {
+        scroll-behavior: smooth;
+      }
+      .hs-fade {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      .hs-spin {
+        animation: hs-spin 1s linear infinite;
+      }
+      @keyframes hs-spin {
+        to { transform: rotate(360deg); }
+      }
+      .hs-fade.hs-in {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 350ms ease, transform 350ms ease;
+      }
+      .hs-modal {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 200ms ease;
+      }
+      .hs-modal.hs-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .hs-toast {
+        transform: translateX(400px);
+        transition: transform 300ms ease;
+      }
+      .hs-toast.hs-show {
+        transform: translateX(0);
+      }
+    </style>
+    <script src="../app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 text-slate-800">
+    <!-- App Shell -->
+    <div id="hsApp" data-page="admin-users" data-title="User Management" class="min-h-screen flex flex-col">
+      <!-- Top Nav Mount (rendered by app.js) -->
+      <div id="hsTopNavMount"></div>
+
+      <!-- Header Mount (rendered by app.js) -->
+      <div id="hsHeaderMount"></div>
+
+      <main class="flex-1 overflow-y-auto bg-gray-100">
+        <!-- Page Content -->
+        <div id="hsContent" class="p-8 space-y-6">
+          <section data-hs-anim class="bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300">
+            <div class="p-6 md:p-8">
+              <h2 class="text-lg font-semibold mb-5">User Management</h2>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">User Name</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Email</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Role</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Status</th>
+                      <th class="px-4 py-3 text-left font-semibold text-slate-700">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="hsUsersTbody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <footer class="text-center text-xs text-slate-500 pt-2">
+            © 2026 Team DIGITAL Sync. All rights reserved.
+          </footer>
+        </div>
+        <!-- /Page Content -->
+      </main>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="hsConfirmModal" class="hs-modal fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 max-w-md w-full mx-4">
+        <h3 id="hsModalTitle" class="text-lg font-semibold mb-3">Confirm Action</h3>
+        <p id="hsModalMessage" class="text-sm text-slate-600 mb-6"></p>
+        <div class="flex gap-3 justify-end">
+          <button
+            id="hsModalCancel"
+            class="h-10 px-6 rounded-lg text-sm font-semibold border border-slate-300 text-slate-700 hover:bg-slate-50 transition"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            id="hsModalConfirm"
+            class="h-10 px-6 rounded-lg text-sm font-semibold text-white shadow bg-gradient-to-r from-orange-400 to-orange-500 hover:brightness-105 transition"
+            type="button"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="hsToastContainer" class="fixed top-20 right-8 z-50 space-y-2"></div>
+  </body>
+</html>
